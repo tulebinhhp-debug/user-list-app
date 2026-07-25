@@ -87,7 +87,9 @@ for (var cp in danhMuc) {
           return ListTile(
             leading: const Icon(Icons.show_chart),
             title: Text(cp.ma),
-            subtitle: Text('Giá ${cp.gia} | SL ${cp.soLuong} | Von ${(cp.gia * cp.soLuong / 1000).toStringAsFixed(2)} triệu'),
+            subtitle: Text('Giá ${cp.gia} | SL ${cp.soLuong} | Von ${(cp.gia * cp.soLuong / 1000).toStringAsFixed(2)} triệu',
+            style: TextStyle(
+    color: (cp.gia * cp.soLuong / 1000) >= 100 ? Colors.red : Colors.green,),),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
