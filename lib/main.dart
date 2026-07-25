@@ -73,8 +73,13 @@ class _StockPageState extends State<StockPage> {
 
   @override
   Widget build(BuildContext context) {
+    double tongVon = 0;
+for (var cp in danhMuc) {
+  tongVon = tongVon + cp.gia * cp.soLuong;
+}
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Danh mục cổ phiếu')),
+    appBar: AppBar(title: Text('Danh mục — Tổng ${(tongVon/1000).toStringAsFixed(2)} triệu')),
       body: ListView.builder(
         itemCount: danhMuc.length,
         itemBuilder: (_, i) {
