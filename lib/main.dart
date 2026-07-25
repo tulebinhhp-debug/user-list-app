@@ -6,48 +6,60 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User List',
-      home: const UserListPage(),
-    );
+    return MaterialApp(title: 'Danh mục CP', home: const StockPage());
   }
 }
 
-class UserListPage extends StatefulWidget {
-  const UserListPage({super.key});
-  @override
-  State<UserListPage> createState() => _UserListPageState();
+// Khuôn mẫu 1 cổ phiếu: có mã, giá, số lượng
+class CoPhieu {
+  String ma;
+  double gia;
+  int soLuong;
+  CoPhieu(this.ma, this.gia, this.soLuong);
 }
 
-class _UserListPageState extends State<UserListPage> {
-  // Danh sách user (dữ liệu nằm trong bộ nhớ)
-  List<String> users = ['Nguyễn Văn A', 'Trần Thị B'];
+class StockPage extends StatefulWidget {
+  const StockPage({super.key});
+  @override
+  State<StockPage> createState() => _StockPageState();
+}
 
-  // Hộp thoại thêm/sửa user
+class _StockPageState extends State<StockPage> {
+  List<CoPhieu> danhMuc = [
+    CoPhieu('GEX', 40.55, 5000),
+    CoPhieu('DHC', 35.20, 2000),
+  ];
+
   void _showForm({int? index}) {
-    final controller = TextEditingController(
-      text: index != null ? users[index] : '',
-    );
+    final maCtrl = TextEditingController(text: index != null ? danhMuc[index].ma : '');
+    final giaCtrl = TextEditingController(text: index != null ? '${danhMuc[index].gia}' : '');
+    final slCtrl = TextEditingController(text: index != null ? '${danhMuc[index].soLuong}' : '');
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text(index == null ? 'Thêm user' : 'Sửa user'),
-        content: TextField(
-          controller: controller,
-          decoration: const InputDecoration(hintText: 'Nhập tên'),
+        title: Text(index == null ? 'Thêm mã CP' : 'Sửa mã CP'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(controller: maCtrl, decoration: const InputDecoration(labelText: 'Mã CP')),
+            TextField(controller: giaCtrl, decoration: const InputDecoration(labelText: 'Giá mua'), keyboardType: TextInputType.number),
+            TextField(controller: slCtrl, decoration: const InputDecoration(labelText: 'Số lượng'), keyboardType: TextInputType.number),
+          ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Hủy'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Hủy')),
           TextButton(
             onPressed: () {
               setState(() {
+                final cp = CoPhieu(
+                  maCtrl.text,
+                  double.tryParse(giaCtrl.text) ?? 0,
+                  int.tryParse(slCtrl.text) ?? 0,
+                );
                 if (index == null) {
-                  users.add(controller.text);        // CREATE
+                  danhMuc.add(cp);
                 } else {
-                  users[index] = controller.text;    // UPDATE
+                  danhMuc[index] = cp;
                 }
               });
               Navigator.pop(context);
@@ -62,29 +74,27 @@ class _UserListPageState extends State<UserListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Quản lý User')),
-      body: ListView.builder(              // READ - hiện danh sách
-        itemCount: users.length,
-        itemBuilder: (_, i) => ListTile(
-          leading: const Icon(Icons.person),
-          title: Text(users[i]),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => _showForm(index: i),   // sửa
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => setState(() => users.removeAt(i)), // DELETE
-              ),
-            ],
-          ),
-        ),
+      appBar: AppBar(title: const Text('Danh mục cổ phiếu')),
+      body: ListView.builder(
+        itemCount: danhMuc.length,
+        itemBuilder: (_, i) {
+          final cp = danhMuc[i];
+          return ListTile(
+            leading: const Icon(Icons.show_chart),
+            title: Text(cp.ma),
+            subtitle: Text('Giá ${cp.gia} | SL ${cp.soLuong} | Von ${(cp.gia * cp.soLuong / 1000).toStringAsFixed(2)} triệu'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(icon: const Icon(Icons.edit), onPressed: () => _showForm(index: i)),
+                IconButton(icon: const Icon(Icons.delete), onPressed: () => setState(() => danhMuc.removeAt(i))),
+              ],
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showForm(),       // thêm
+        onPressed: () => _showForm(),
         child: const Icon(Icons.add),
       ),
     );
