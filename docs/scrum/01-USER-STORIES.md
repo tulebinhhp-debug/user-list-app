@@ -527,26 +527,40 @@ Scrum Master đã tách **cảnh báo ngưỡng giá/pivot** ra khỏi **Lớp K
 
 **Xử lý của Scrum Master:**
 - ✅ `AUTH-D1`: **đăng nhập bằng Google**, không dùng OTP SMS *(OTP tốn 300–800đ/tin, là chi phí chạy suốt đời sản phẩm)*.
-- ✅ `PRICE-D1`: còn **3 gói** — Free 0đ · Pro 690k/năm · Premium 1.290k/năm. Early bird 490k trong 90 ngày đầu. Gói *Premium AI 3.590k* bỏ theo `BIZ-02`.
-- ⏳ `PAY-D1`: **kênh thanh toán để sau** — nhưng theo `GTM_PLAN` Phase 3, tuần 9 đã launch early bird → **hạn chót chốt là tuần 8**.
+- ✅ `PRICE-D1`: còn **3 gói** — Free · Pro · Premium, mỗi gói có **3 thời hạn: 3 tháng · 6 tháng · 1 năm**. Giá 1 năm: Pro 690k, Premium 1.290k. Early bird 490k trong 90 ngày đầu. Gói *Premium AI 3.590k* bỏ theo `BIZ-02`.
+- ✅ `PAY-D1` **chốt 29/07: SePay**, bán theo gói thời hạn **3 tháng · 6 tháng · 1 năm**, không có trừ tiền tự động.
 - 🔴 `PAY-R1`: Apple bắt buộc dùng In-App Purchase cho nội dung số (ăn 15–30%). **Đặt QR chuyển khoản trong app iOS sẽ bị từ chối khi duyệt.** Ba hướng: bán trên website / IAP cho iOS + SePay cho Android / chỉ ra Android trước.
 - 🟡 `PAY-R2`: SePay là chuyển khoản → **không tự động gia hạn**. Mỗi kỳ khách phải chủ động chuyển lại — mỗi lần như vậy là một lần có thể mất khách.
 
 ---
 
-### US-06a — Đăng ký và đăng nhập bằng Google
+### US-06a — Vào app: xem thử trước, đăng nhập sau
 
 > **As a** nhà đầu tư,
-> **I want** đăng nhập bằng tài khoản Google chỉ với một chạm, không phải nghĩ mật khẩu hay chờ tin nhắn,
-> **So that** tôi vào dùng được ngay thay vì bỏ cuộc ngay ở màn hình đầu tiên.
+> **I want** xem thử nội dung app trước đã, và khi cần lưu gì đó thì đăng nhập bằng Google hoặc Apple chỉ với một chạm,
+> **So that** tôi biết app có đáng dùng không trước khi phải giao tài khoản của mình.
 
-| Persona | Mốc | Trace | Phụ thuộc |
-|---|---|---|---|
-| P1, P2 | M0 | FR-AUTH-01, FR-COMP-03, NFR-06 | — |
+| Persona | Mốc | Trace | Phụ thuộc | Điểm |
+|---|---|---|---|---|
+| P1, P2 | M0 | FR-AUTH-01, FR-COMP-03, NFR-06 | — | **11** |
+
+> **Cập nhật 29/07 theo gợi ý của thầy (Week 2 Day 3):**
+> - ✅ `AUTH-D2` — **thêm Sign in with Apple**. Quy định App Store 4.8: app cho đăng nhập bằng Google thì bắt buộc phải có Sign in with Apple trên iOS, không có là bị từ chối khi duyệt.
+> - ✅ `AUTH-D3` — **thêm Guest Mode**. Vẽ hành trình của Minh ở `04-USER-JOURNEYS.md` §B1 cho thấy màn hình bắt đăng nhập là chỗ rơi rụng lớn nhất.
+> - Điểm tăng **5 → 11**. Phải tách làm hai khi lập Sprint.
 
 **Điều kiện nghiệm thu**
-1. Đăng nhập bằng Google trên cả iOS và Android, **hoàn tất trong ≤ 3 chạm** kể từ màn hình mở đầu.
-2. Lần đầu đăng nhập tự tạo tài khoản — **không có màn hình đăng ký riêng**.
+
+**A. Chế độ khách vãng lai** *(`AUTH-D3`)*
+1. Mở app lần đầu **không bị chặn bởi màn hình đăng nhập**.
+2. Khách vãng lai **làm được**: tra mã · đọc bản giải thích đầy đủ · xem **5 dòng đầu** kết quả bộ lọc.
+3. Khách vãng lai **không làm được**: lưu watchlist · đặt cảnh báo · nhận thông báo · mở tài khoản chứng khoán. Chạm vào thì hiện lời mời đăng nhập **nêu rõ được thêm gì**, không chỉ nói "cần đăng nhập".
+4. Đăng nhập xong → **lịch sử tra cứu ở chế độ khách được chuyển sang tài khoản**, không mất.
+
+**B. Đăng nhập**
+5. Hỗ trợ **Google** (iOS + Android) và **Sign in with Apple** (bắt buộc trên iOS — `AUTH-D2`).
+6. Hoàn tất trong **≤ 3 chạm** kể từ lúc bấm nút đăng nhập.
+7. Lần đầu đăng nhập tự tạo tài khoản — **không có màn hình đăng ký riêng**.
 3. 🔴 Ngay lần đầu, bắt buộc xác nhận đã đọc **tuyên bố miễn trừ trách nhiệm** trước khi vào app (FR-COMP-03); lưu lại thời điểm xác nhận.
 4. Cùng lúc hiển thị thông tin minh bạch: *"Chủ ứng dụng là môi giới chứng khoán và nhận hoa hồng khi bạn giao dịch qua ID trong app"* (`FR-EXT-COMP-02`).
 5. Hỏi chọn **chế độ hiển thị** ở bước onboarding — chi tiết ở **US-08**; trước khi US-08 sẵn sàng thì mặc định chế độ Đơn giản.
@@ -569,13 +583,23 @@ Scrum Master đã tách **cảnh báo ngưỡng giá/pivot** ra khỏi **Lớp K
 | P1, P2 | M1 | FR-AUTH-02, FR-EXT-PRICING-05..09 | US-06a, `PAY-D1` |
 
 **Điều kiện nghiệm thu**
-1. Bảng giá hiển thị **3 gói**: Free 0đ · Pro 690k/năm · Premium 1.290k/năm, nêu rõ mỗi gói có gì và **không có gì**.
+1. Bảng giá hiển thị **3 gói × 3 thời hạn**, nêu rõ mỗi gói có gì và **không có gì**:
+
+   | | 3 tháng | 6 tháng | 1 năm |
+   |---|---|---|---|
+   | **Free** | 0đ | 0đ | 0đ |
+   | **Pro** | *đề xuất 210.000đ* | *đề xuất 390.000đ* | **690.000đ** ✅ |
+   | **Premium** | *đề xuất 390.000đ* | *đề xuất 720.000đ* | **1.290.000đ** ✅ |
+
+   *Giá 3 và 6 tháng đang là đề xuất của SM (thời hạn càng dài, giá mỗi tháng càng rẻ) — chờ PO chốt ở `PAY-D2`.*
 2. Hỗ trợ **mã giảm giá**: early bird 490k · mua nhóm từ 5 người −15% · giới thiệu bạn bè (FR-EXT-PRICING-05).
-3. ⏳ Kênh thanh toán theo `PAY-D1` — **story không phụ thuộc kênh cụ thể**. Yêu cầu chung cho mọi kênh:
-   - Mỗi lần trả tiền có **mã đơn duy nhất**, khớp được với đúng người và đúng gói
-   - Xác nhận xong → **tự động bật quyền, không cần người duyệt**
-   - Quá **5 phút** chưa xác nhận được → hiện nút *"Tôi đã trả tiền rồi"*, đưa vào hàng chờ PO đối soát tay
-   - 🔒 Tín hiệu xác nhận thanh toán phải **kiểm chứng được chữ ký/khoá bí mật** — không được để ai giả mạo mà bật gói miễn phí
+3. **Thanh toán bằng mã QR chuyển khoản qua SePay** *(PO chốt `PAY-D1`)*:
+   - Mỗi lần trả tiền sinh **mã đơn duy nhất**, đặt vào **nội dung chuyển khoản**
+   - Hiện mã QR có sẵn **số tài khoản + đúng số tiền + nội dung** — khách chỉ mở app ngân hàng quét
+   - SePay báo về → khớp mã đơn và số tiền → **tự động bật quyền, không cần người duyệt**
+   - Quá **5 phút** chưa nhận được xác nhận → hiện nút *"Tôi đã chuyển tiền rồi"*, đưa vào hàng chờ PO đối soát tay
+   - 🔒 Tín hiệu từ SePay phải **kiểm chứng được chữ ký/khoá bí mật** — không để ai giả mạo mà bật gói miễn phí
+   - 🔴 **Không đặt mã QR trong app iOS** — xem `PAY-R1`. Cần chốt: bán trên website, hay chỉ phát hành Android trước
 4. Xử lý được các tình huống lệch: chuyển thiếu tiền · chuyển thừa · chuyển hai lần · sai nội dung → **không tự bật gói**, đẩy sang PO xử lý, và báo cho khách biết đang xử lý.
 5. Bật quyền xong: hiện gói đang dùng + **ngày hết hạn cụ thể**, gửi biên nhận qua email.
 6. Nâng cấp giữa kỳ → **trừ phần giá trị còn lại** của gói cũ.
@@ -594,9 +618,11 @@ Scrum Master đã tách **cảnh báo ngưỡng giá/pivot** ra khỏi **Lớp K
 |---|---|---|---|
 | P1, P2 | M1 | FR-EXT-PRICING-07, FR-AUTH-02 | US-06b |
 
+> ⬆️ **Nâng lên Must (29/07):** không có trừ tiền tự động, gói 3 tháng nghĩa là khách phải chủ động chuyển lại 4 lần/năm. Nhắc hạn không còn là tiện ích mà là thứ giữ doanh thu.
+
 **Điều kiện nghiệm thu**
 1. Nhắc trước **7 ngày** và **1 ngày** qua thông báo đẩy + email.
-2. 🔑 Thông báo nhắc **kèm sẵn phương tiện thanh toán đúng số tiền** — khách gia hạn xong trong một bước, không phải vào app tìm lại. *(Bù cho việc không tự động gia hạn — `PAY-R2`)*
+2. 🔑 Thông báo nhắc **kèm sẵn mã QR đúng số tiền và đúng nội dung** — khách mở app ngân hàng quét là xong, không phải vào lại app tìm. *(Bù cho việc không có trừ tiền tự động — `PAY-R2`)*
 3. Gia hạn trước hạn → **cộng dồn** vào ngày hết hạn cũ, không mất ngày nào.
 4. Hết hạn → tự về Free, hiện rõ *"Gói đã hết hạn ngày dd/mm"*, **không tự trừ tiền lần nào**.
 5. Khách tắt được nhắc hạn nếu không muốn nhận.
@@ -766,11 +792,16 @@ Giữ lại để không mất dấu; sẽ đưa vào Product Backlog ở nhóm 
 | ❓ Q-02 | **PO đang cắm ID ở những sàn nào?** Quyết định danh sách sàn hiện trong app | PO | Cần sớm |
 | ❓ Q-03 | Khách **đã có TK sẵn** ở sàn đó từ trước thì xử lý sao — cho chuyển ID môi giới rồi tặng, hay không tặng? | PO | Cần sớm |
 | BRIEF-D1 | Gửi bản tin qua **Zalo OA** — có phí và cần xác minh doanh nghiệp. Giai đoạn đầu dùng push + email | PO | Thường |
-| 🔴 PAY-D1 | **Chốt kênh thanh toán** — SePay QR / In-App Purchase / bán trên web. **Hạn: tuần 8**, vì tuần 9 đã launch early bird theo `GTM_PLAN` | PO | Chặn theo hạn |
+| ✅ PAY-D1 | **Chốt 29/07: dùng SePay**, bán theo gói thời hạn **3 tháng · 6 tháng · 1 năm**. Không có trừ tiền tự động vì chưa tìm được nhà cung cấp phù hợp | PO | Xong |
+| ❓ PAY-D2 | **Chốt giá cho gói 3 tháng và 6 tháng** — hiện mới có giá 1 năm | PO | Cần sớm |
 | 🔴 PAY-R1 | **Apple cấm bán nội dung số ngoài In-App Purchase.** Đặt QR chuyển khoản trong app iOS sẽ bị từ chối khi duyệt | PO | Cao |
-| PAY-R2 | ✅ **PO chốt 29/07: dùng nhà cung cấp bên thứ ba để tự động trừ phí hàng tháng.** Cần xác minh nhà cung cấp đó (a) hỗ trợ trừ tiền định kỳ, (b) không vướng chính sách Apple (`PAY-R1`) | PO | Thường |
+| 🟡 PAY-R2 | **Không có trừ tiền tự động.** Gói 3 tháng nghĩa là khách phải chủ động chuyển tiền lại **4 lần/năm** — mỗi lần là một cơ hội mất khách. Vì vậy **US-06c nâng từ Should lên Must** | SM | Cao |
+| 🟡 PAY-R3 | Đối soát tay: 30 khách × 4 lần/năm = 120 lượt/năm — làm được. **Tới ~300 khách là 1.200 lượt/năm (~100/tháng)** → lúc đó bắt buộc phải tự động hoá | SM | Theo dõi |
 | AUTH-R1 | Chỉ đăng nhập Google → khách mất quyền truy cập Gmail là mất tài khoản. Cần quy trình hỗ trợ chuyển tay | PO | Thường |
 | ✅ AUTH-D1 | **Đăng nhập bằng Google**, không dùng OTP SMS | PO | Xong |
+| ✅ AUTH-D2 | **Thêm Sign in with Apple** — quy định App Store 4.8, không có là bị từ chối khi duyệt iOS | PO | Xong 29/07 |
+| ✅ AUTH-D3 | **Thêm Guest Mode** — cho xem trước, chỉ chặn ở chỗ cần lưu dữ liệu | PO | Xong 29/07 |
+| ❌ SURV-D1 | Khảo sát 700 người — **PO quyết định không làm**, chọn theo phán đoán của người trong nghề | PO | Đóng 29/07 |
 | ✅ PRICE-D1 | **3 gói**: Free · Pro 690k · Premium 1.290k · early bird 490k | PO | Xong |
 | ✅ AI-D1 | **Bỏ chat hỏi–đáp mở, làm bản giải thích viết sẵn** — chi phí cố định, không giới hạn lượt đọc | PO | Xong |
 | BIZ-02 | Gói **Premium AI 3.590k/năm** mất lý do tồn tại → `PRICING_TIERS` rút còn 3 gói | PO | Thường |
